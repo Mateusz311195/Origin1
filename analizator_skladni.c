@@ -77,7 +77,9 @@ void analizator_skladni(char *nazwa_pliku)
                 para_naw_z--;
                 if(buf[i+1] == ';')
                 {
-                  
+                  if protyp
+			autorskie_funkcje(funkcja_na_stosie) -> gdzie_prototyp = i
+			 zdejmij_ze_stosu()
                 }
                 else
                 {
