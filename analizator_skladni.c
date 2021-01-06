@@ -7,7 +7,9 @@
 
 void analizator_skladni(char *nazwa_pliku)
 {
-
+  int tmp;
+  int i;
+  int stop;
   int para_naw_k = 0; //czy nawiasy klamrowe sie zgadzaja 
   int para_naw_z = 0; //czy zwykle nawiasy sie zgadzaja
   char buf[BUFSIZE];
@@ -24,7 +26,13 @@ void analizator_skladni(char *nazwa_pliku)
   
   while( fgets( buf, BUFSIZE, in ) != NULL ) 
   {
-    analizator_leksykalny(buf);
+    tmp = strlen(buf);
+    i = 0;
+    stop = 0;
+    while(i < tmp && stop == 0)
+    {
+      analizator_leksykalny(buf);
+    }
   }
   
   
