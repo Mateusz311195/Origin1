@@ -85,6 +85,13 @@ void analizator_skladni(char *nazwa_pliku)
                 {
                   if(buf[i+1] == '{')
                   {
+			  for(k = 0; k < 9; k++)
+				  if(funkcja_na_stosie != funkcje[k]) //k - jakaś zmienna do iteracji po pętli, sprawdzamy czy nie jest to main, itp...
+				  {
+					autorskie_funkcje(funkcja_na_stosie) -> def_start = //linia pliku
+					break;
+				  }
+			  
                   }
                 }
                 break;
