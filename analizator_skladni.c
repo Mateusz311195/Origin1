@@ -31,7 +31,7 @@ void analizator_skladni(char *nazwa_pliku)
     stop = 0;
     while(i < tmp && stop == 0)
     {
-      analizator_leksykalny(buf);
+      analizator_leksykalny(buf[i]);
     }
   }
   
