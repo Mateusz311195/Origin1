@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-#include "header.h"
+//#include "header.h"
 
 #define BUFSIZE 8192
 #define ILE_ZNANYCH_FUNKCJI 9
@@ -11,9 +13,9 @@ struct f
 	int def_start;
 	int def_koniec;
 	int *gdzie_uzycie[150];
-  int ile_uzyc=0;
-	char *nazwa = malloc(150 * sizeof(char));
-	char **co_wywoluje = malloc(150 * 150 * sizeof(char*));
+	int ile_uzyc;
+	char *nazwa;
+	char **co_wywoluje;
 } autorskie_funkcje[150];
 
 void analizator_skladni(char *nazwa_pliku)
@@ -25,21 +27,21 @@ void analizator_skladni(char *nazwa_pliku)
   int stop;
   int ignore;
   int numer_linii=0;
-  int para_naw_k = 0; //czy nawiasy klamrowe sie zgadzaja 
+  int para_naw_k = 0; //czy nawiasy klamrowe sie zgadzaja
   int para_naw_z = 0; //czy zwykle nawiasy sie zgadzaja
   char buf[BUFSIZE];
   char *subbuf;
   char *funkcje[ILE_ZNANYCH_FUNKCJI] = {"for","while","sizeof","main","if","switch","return","printf","scanf"};
-  
+
   FILE *in = fopen(nazwa_pliku, "r");
- 
-  if( in == NULL ) 
+
+  if( in == NULL )
   {
     fprintf( stderr, "błąd: nie mogę czytać pliku %s\n", nazwa_pliku);
-    return EXIT_FAILURE;
+    return -1;
   }
-  
-  while( fgets( buf, BUFSIZE, in ) != NULL ) 
+
+  while( fgets( buf, BUFSIZE, in ) != NULL )
   {
     tmp = strlen(buf);
     i = -1;
@@ -56,7 +58,7 @@ void analizator_skladni(char *nazwa_pliku)
                 para_naw_z++;
                 subbuf = malloc(BUFSIZE * sizeof(char));
                 j = i;
-                while(j-1>0 && ((buf[j-1] > 64 && bug[j-1]<91) || (buf[j-1] > 96 && bug[j-1]<123)))
+                while(j-1>0 && ((buf[j-1] > 64 && buf[j-1]<91) || (buf[j-1] > 96 && buf[j-1]<123)))
                   j--;
                 strncpy(subbuf, buf+j, i-j);
                 subbuf[i-j+1] = '\0';
@@ -65,7 +67,7 @@ void analizator_skladni(char *nazwa_pliku)
                   if(strcmp(funkcje[j], subbuf) == 0)
                   {
                     stop = 1;
-                    break; 
+                    break;
                   }
                 }
           //zabawa w identyfikowanie i wypisywanie funkcji, wkladanie dziadostwa na stos, cos tam cos tam do zrobienia
@@ -75,7 +77,7 @@ void analizator_skladni(char *nazwa_pliku)
                 if(ignore == 1)
                     continue;
                 para_naw_z--;
-                if(buf[i+1] == ';')
+         /*       if(buf[i+1] == ';')
                 {
                   if protyp
 			autorskie_funkcje(funkcja_na_stosie) -> gdzie_prototyp = i
@@ -85,25 +87,21 @@ void analizator_skladni(char *nazwa_pliku)
                 {
                   if(buf[i+1] == '{')
                   {
-			  for(k = 0; k < 9; k++)
-				  if(funkcja_na_stosie != funkcje[k]) //k - jakaś zmienna do iteracji po pętli, sprawdzamy czy nie jest to main, itp...
-				  {
-					autorskie_funkcje(funkcja_na_stosie) -> def_start = //linia pliku
-					break;
-				  }
-			  
+
+			autorskie_funkcje(funkcja_na_stosie) -> def_start = //linia pliku
+			break;
                   }
-                }
+                }*/
                 break;
             case '{':
                 if(ignore == 1)
                     continue;
-                para_naw_k++;            
+                para_naw_k++;
                 break;
             case '}':
                 if(ignore == 1)
                     continue;
-                para_naw_k--;            
+                para_naw_k--;
                 break;
             case '/': // jesli wystepuje // lub /* lub kolejny case */ to zakladamy, ze nas nie interesuje
                 if(ignore == 1)
@@ -111,7 +109,7 @@ void analizator_skladni(char *nazwa_pliku)
                 if(buf[i+1] == '/' || buf[i+1] == '*')
                   stop = 1;
                 break;
-          case '*': 
+          case '*':
                 if(ignore == 1)
                     continue;
                 if(buf[i+1] == '/')
@@ -128,25 +126,27 @@ void analizator_skladni(char *nazwa_pliku)
                 break;
         }
     }
-    
+
     if(ignore == 1)
       {
         printf("cos jest nie tak z cudzyslowem\n");
-        return EXIT_FAILURE;
+        return -1;
       }
-    
+
     numer_linii++;
   }
-            
+
   if(para_naw_z != 0)
   {
       fprintf(stderr, "Zwykle nawiasy sie nie zgadzaja!\n");
-      return EXIT_FAILURE;
+      return -1;
   }
   if(para_naw_k != 0)
   {
       fprintf(stderr, "Klamrowe nawiasy sie nie zgadzaja!\n");
-      return EXIT_FAILURE;
-  }  
+      return -1;
+  }
+
+  return 0;
 }
 
