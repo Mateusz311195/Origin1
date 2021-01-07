@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1610017856 source:d:\studia\podstawy_informatyki\programy\tmptmp\analizator_s.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
+1610017995 source:d:\studia\podstawy_informatyki\programy\tmptmp\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"header.h"
+
+1610021645 d:\studia\podstawy_informatyki\programy\tmptmp\header.h
+	<stdio.h>
+
+1610017957 source:d:\studia\podstawy_informatyki\programy\tmptmp\stos.c
+	<stdio.h>
+	<stdlib.h>
+
